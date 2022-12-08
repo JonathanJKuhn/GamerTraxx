@@ -33,11 +33,46 @@ const checkTokenValidity = (token=token) => {
     return(isValid)
 }
 
-module.exports.index = async (req, res) => {
+const searchGamesIGDB = (query) => {
+    axios({
+        url: 'https://api.igdb.com/v4/games',
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Client-ID': process.env.CLIENT_ID,
+            'Authorization': `${token.token_type} ${token.access_token}`,
+            'Accept-Encoding': 'gzip,deflate,compress'
+    },
+        data: `search "${query}"; fields name, cover.url, first_release_date; limit 50;`
+    })
+    .then((res) => {
+        res.data.forEach((game) => {
+            let date = new Date(game.first_release_date * 1000)
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' }
+            game['first_release_date'] = date.toLocaleDateString('en-US', options)
+        })
+        console.log(res.data)
+    })
+    .catch((err) => console.log(err))
+}
+
+
+
+module.exports.index = (req, res) => {
     if(checkTokenValidity(token) === false) {
         getToken()
     }
     res.json({
         message: "API Index",
+    })
+}
+
+module.exports.searchIGDB = (req, res) => {
+    if(checkTokenValidity(token) === false) {
+        getToken()
+    }
+    searchGamesIGDB(req.body['query'])
+    res.json({
+        message: "Searched IGDB! Check console for results.",
     })
 }
