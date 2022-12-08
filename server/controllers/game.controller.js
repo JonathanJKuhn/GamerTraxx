@@ -1,5 +1,4 @@
 const axios = require('axios')
-const apicalypse = require('apicalypse')
 
 //include access_token, token_type, and expiration_time?
 let token = {
