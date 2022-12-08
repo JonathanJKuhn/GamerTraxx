@@ -49,7 +49,10 @@ const searchGamesIGDB = (query) => {
         res.data.forEach((game) => {
             let date = new Date(game.first_release_date * 1000)
             const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' }
-            game['first_release_date'] = date.toLocaleDateString('en-US', options)
+            game.first_release_date = {
+                timepstamp: game.first_release_date,
+                string: date.toLocaleDateString('en-US', options)
+            }
         })
         console.log(res.data)
     })
