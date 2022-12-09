@@ -65,7 +65,32 @@ const searchGamesIGDB = async (query) => {
   }
 }
 
-
+const getDetailsIGDB = async (id) => {
+    try {
+        const game = await axios({
+            url: 'https://api.igdb.com/v4/games',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Client-ID': process.env.CLIENT_ID,
+                'Authorization': `${token.token_type} ${token.access_token}`,
+                'Accept-Encoding': 'gzip,deflate,compress'
+            },
+            data: `fields name, cover.url, first_release_date, genres.name, game_modes.name, platforms.name, involved_companies.company.name,involved_companies.publisher, involved_companies.developer, summary, videos.video_id, screenshots.url; where id = ${id};`
+        });
+        if(game.data){
+            let date = new Date(game.data[0].first_release_date * 1000)
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' };
+            game.data[0].first_release_date = {
+                timestamp: game.data[0].first_release_date,
+                date: date.toLocaleDateString('en-US', options)
+            }
+            return game.data[0]
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 module.exports.index = (req, res) => {
     res.json({
@@ -85,4 +110,17 @@ module.exports.searchIGDB = async (req, res) => {
     }
     res.json(results)
 
+}
+
+module.exports.detailsIGDB = async (req, res) => {
+    if(checkTokenValidity(token) === false) {
+        getToken()
+    }
+    const results = await getDetailsIGDB(req.params.id)
+    if(!results) {
+        res.status(400).json({
+            message: "No games found",
+        })
+    }
+    res.json(results)
 }
