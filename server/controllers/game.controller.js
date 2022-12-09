@@ -33,8 +33,9 @@ const checkTokenValidity = (token=token) => {
     return(isValid)
 }
 
-const searchGamesIGDB = (query) => {
-    axios({
+const searchGamesIGDB = async (query) => {
+  try {
+    const games = await axios({
         url: 'https://api.igdb.com/v4/games',
         method: 'POST',
         headers: {
@@ -44,38 +45,44 @@ const searchGamesIGDB = (query) => {
             'Accept-Encoding': 'gzip,deflate,compress'
     },
         data: `search "${query}"; fields name, cover.url, first_release_date; limit 50;`
-    })
-    .then((res) => {
-        res.data.forEach((game) => {
+    });
+
+    if(games.data){
+        games.data.forEach(game => {
             let date = new Date(game.first_release_date * 1000)
-            const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' }
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' };
             game.first_release_date = {
-                timepstamp: game.first_release_date,
-                string: date.toLocaleDateString('en-US', options)
+                timestamp: game.first_release_date,
+                date: date.toLocaleDateString('en-US', options)
             }
         })
-        console.log(res.data)
-    })
-    .catch((err) => console.log(err))
+
+        return games.data
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 
 
 module.exports.index = (req, res) => {
-    if(checkTokenValidity(token) === false) {
-        getToken()
-    }
     res.json({
         message: "API Index",
     })
 }
 
-module.exports.searchIGDB = (req, res) => {
+module.exports.searchIGDB = async (req, res) => {
     if(checkTokenValidity(token) === false) {
         getToken()
     }
-    searchGamesIGDB(req.body['query'])
-    res.json({
-        message: "Searched IGDB! Check console for results.",
-    })
+    const results = await searchGamesIGDB(req.body['query'])
+    if(!results) {
+        res.status(400).json({
+            message: "No games found",
+        })
+    }
+    res.json(results)
+
 }
