@@ -1,13 +1,13 @@
 import React from 'react'
-import Box from '@mui/material/Box'
+import DetailsHeader from './DetailsHeader'
+import DetailsBody from './DetailsBody'
 
 const GameDetails = () => {
   return (
-    <Box
-        bgcolor={'#f5f5f5'}
-    >
-        <div>GameDetails</div>
-    </Box>
+    <div style={{backgroundColor: '#cccccc'}}>
+        <DetailsHeader />
+        <DetailsBody />
+    </div>
   )
 }
 

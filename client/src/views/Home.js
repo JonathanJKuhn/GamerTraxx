@@ -1,7 +1,8 @@
 import React from 'react'
-import Container from '@mui/material/Container'
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2'
-import Nav from '../components/Nav'
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Header from '../components/Header'
 import SearchBar from '../components/SearchBar'
 import GameList from '../components/GameList'
 import GameDetails from '../components/GameDetails'
@@ -9,17 +10,17 @@ import GameDetails from '../components/GameDetails'
 const Home = () => {
   return (
     <div>
-        <Nav />
+        <Header />
         <SearchBar />
-        <Container maxWidth="lg">
-            <Grid2 container spacing={2} display='flex' justifyContent='center'>
-                <Grid2 item xs={12} sm={6} md={4} lg={3}>
+        <Container>
+            <Row>
+                <Col>
                     <GameList />
-                </Grid2>
-                <Grid2 item xs={12} sm={6} md={4} lg={3}>
+                </Col>
+                <Col>
                     <GameDetails />
-                </Grid2>
-            </Grid2>
+                </Col>
+            </Row>
         </Container>
     </div>
   )
