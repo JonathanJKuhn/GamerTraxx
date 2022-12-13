@@ -85,7 +85,27 @@ const getDetailsIGDB = async (id) => {
                 timestamp: game.data[0].first_release_date,
                 date: date.toLocaleDateString('en-US', options)
             }
-            return game.data[0]
+            let involved_companies = []
+            game.data[0].involved_companies.forEach(company => {
+                involved_companies.push({
+                    "name": company.company.name,
+                    "publisher": company.publisher,
+                    "developer": company.developer
+                })
+            })
+            return ({
+                "id": game.data[0].id,
+                "name": game.data[0].name,
+                "cover": game.data[0].cover.url,
+                "release_date": game.data[0].first_release_date,
+                "genres": game.data[0].genres,
+                "game_modes": game.data[0].game_modes,
+                "platforms": game.data[0].platforms,
+                "involved_companies": involved_companies,
+                "summary": game.data[0].summary,
+                "videos": game.data[0].videos,
+                "screenshots": game.data[0].screenshots
+            })
         }
     } catch (err) {
         console.log(err);
