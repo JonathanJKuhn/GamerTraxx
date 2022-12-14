@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState} from 'react'
+import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -8,17 +9,30 @@ import GameList from '../components/GameList'
 import GameDetails from '../components/GameDetails'
 
 const Home = () => {
+    const [searchResults, setSearchResults] = useState([])
+    const [selectedGame, setSelectedGame] = useState()
+
+    const searchIGDB = (searchParam) => {
+        axios.get(`http://localhost:8000/api/v1/search-igdb/${searchParam}`)
+        .then(res => {
+            setSearchResults(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
   return (
     <div>
         <Header />
-        <SearchBar />
+        <SearchBar onSubmitProp={searchIGDB} />
         <Container>
             <Row>
                 <Col>
-                    <GameList />
+                    <GameList searchResults={searchResults} setSelectedGame={setSelectedGame}/>
                 </Col>
                 <Col>
-                    <GameDetails />
+                    <GameDetails selectedGame={selectedGame}/>
                 </Col>
             </Row>
         </Container>

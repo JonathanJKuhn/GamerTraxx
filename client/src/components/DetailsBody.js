@@ -4,15 +4,27 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
 
-const DetailsBody = () => {
+const DetailsBody = (props) => {
+    const { game } = props
+    let isLoaded = false
+    if(game.genres !== undefined) {
+        isLoaded = true
+    }
+
   return (
-    <Container className='py-2' style={{backgroundColor: '#aaaaaa'}}>
+    <>
+    {isLoaded && (
+        <Container className='py-2' style={{backgroundColor: '#aaaaaa'}}>
         <Row>
             <Col md={{span: "2", offset: "3"}}>
                 <p className='mb-0'>Genre:</p>
             </Col>
             <Col>
-                <p className='mb-0'>Adventure, Role-playing (RPG)</p>
+                <p className='mb-0'>{
+                    game.genres.map((genre, i) => {
+                        return <span key={i}>{genre.name}, </span>
+                    })
+                }</p>
             </Col>
         </Row>
         <Row>
@@ -20,7 +32,11 @@ const DetailsBody = () => {
                 <p className='mb-0'>Platforms:</p>
             </Col>
             <Col>
-                <p className='mb-0'>PlayStation 3, Xbox 360, PC</p>
+                <p className='mb-0'>{
+                    game.platforms.map((platform, i) => {
+                        return <span key={i}>{platform.name}, </span>
+                    })
+                }</p>
             </Col>
         </Row>
         <Row>
@@ -28,7 +44,13 @@ const DetailsBody = () => {
                 <p className='mb-0'>Publisher:</p>
             </Col>
             <Col>
-                <p className='mb-0'>Electronic Arts</p>
+                <p className='mb-0'>{
+                    game.involved_companies.map((company, i) => {
+                        if(company.publisher === true) {
+                            return <span key={i}>{company.name}, </span>
+                        }
+                    })
+                }</p>
             </Col>
         </Row>
         <Row>
@@ -36,11 +58,17 @@ const DetailsBody = () => {
                 <p className='mb-0'>Developers:</p>
             </Col>
             <Col>
-                <p>FromSoftware</p>
+                <p>{
+                    game.involved_companies.map((company, i) => {
+                        if(company.developer === true) {
+                            return <span key={i}>{company.name}, </span>
+                        }
+                    })       
+                }</p>
             </Col>
         </Row>
         <Row className='mb-3 px-3'>
-            <p>An action RPG and spiritual sequel to Demon's Souls in which the player embodies the Chosen Undead, who is tasked with fulfilling an ancient prophecy by ringing the Bells of Awakening in the dark fantasy setting of Lordran, an open world with intricate areas full of beasts, former humans gone hollow, and magical abominations whom the player must overcome in challenging and unforgiving combat.</p>
+            <p>{game.summary}</p>
         </Row>
         <Row className='mb-4'>
             <Col>
@@ -50,30 +78,24 @@ const DetailsBody = () => {
         <Row>
 
             <Carousel>
-            <Carousel.Item>
-                    <img
-                    className="d-block mx-auto"
-                    src="https://via.placeholder.com/300x200"
-                    alt="First slide"
-                    />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                    className="d-block mx-auto"
-                    src="https://picsum.photos/300/200"
-                    alt="Second slide"
-                    />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                    className="d-block mx-auto"
-                    src="https://picsum.photos/300/200?blur=1"
-                    alt="Third slide"
-                    />
-                </Carousel.Item>
+                {
+                    game.screenshots.map((screenshot, i) => {
+                        return (
+                            <Carousel.Item key={i}>
+                                <img
+                                className="d-block mx-auto"
+                                src={screenshot.url}
+                                alt={`Slide ${i+1}`}
+                                />
+                            </Carousel.Item>
+                        )
+                    })
+                }
             </Carousel>
         </Row>
     </Container>
+    )}
+    </>
   )
 }
 

@@ -51,9 +51,23 @@ const searchGamesIGDB = async (query) => {
         games.data.forEach(game => {
             let date = new Date(game.first_release_date * 1000)
             const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' };
-            game.first_release_date = {
-                timestamp: game.first_release_date,
-                date: date.toLocaleDateString('en-US', options)
+            if(game.hasOwnProperty('first_release_date')) {
+                game.first_release_date = {
+                    "timestamp": game.first_release_date,
+                    "date": date.toLocaleDateString('en-US', options)
+                }
+            } else {
+                game.first_release_date = {
+                    "timestamp": null,
+                    "date": null
+                }
+            }
+            if(game.hasOwnProperty('cover')){
+                game.cover.url = `https:${game.cover.url}`
+            } else {
+                game.cover = {
+                    "url": 'https://via.placeholder.com/90?text=No+Cover+Found'
+                }
             }
         })
 
@@ -79,32 +93,53 @@ const getDetailsIGDB = async (id) => {
             data: `fields name, cover.url, first_release_date, genres.name, game_modes.name, platforms.name, involved_companies.company.name,involved_companies.publisher, involved_companies.developer, summary, videos.video_id, screenshots.url; where id = ${id};`
         });
         if(game.data){
-            let date = new Date(game.data[0].first_release_date * 1000)
+            let gameResult = game.data[0]
+            let date = new Date(gameResult.first_release_date * 1000)
             const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' };
-            game.data[0].first_release_date = {
-                timestamp: game.data[0].first_release_date,
-                date: date.toLocaleDateString('en-US', options)
+            if(gameResult.hasOwnProperty('first_release_date')) {
+                gameResult.first_release_date = {
+                    "timestamp": game.data[0].first_release_date,
+                    "date": date.toLocaleDateString('en-US', options)
+                }
+            } else {
+                gameResult.first_release_date = {
+                    "timestamp": null,
+                    "date": null
+                }
             }
+            if(gameResult.hasOwnProperty('cover')){
+                gameResult.cover.url = `https:${gameResult.cover.url}`
+            } else {
+                gameResult.cover = {
+                    "url": 'https://via.placeholder.com/125?text=No+Cover+Found'
+                }
+            }
+
             let involved_companies = []
-            game.data[0].involved_companies.forEach(company => {
-                involved_companies.push({
-                    "name": company.company.name,
-                    "publisher": company.publisher,
-                    "developer": company.developer
+            if(gameResult.hasOwnProperty('involved_companies')){
+                gameResult.involved_companies.forEach(company => {
+                    involved_companies.push({
+                        "name": company.company.name,
+                        "publisher": company.publisher,
+                        "developer": company.developer
+                    })
                 })
-            })
+            } else {
+                involved_companies = null
+            }
+
             return ({
-                "id": game.data[0].id,
-                "name": game.data[0].name,
-                "cover": game.data[0].cover.url,
-                "release_date": game.data[0].first_release_date,
-                "genres": game.data[0].genres,
-                "game_modes": game.data[0].game_modes,
-                "platforms": game.data[0].platforms,
+                "id": gameResult.id,
+                "name": gameResult.name,
+                "cover": gameResult.cover.url,
+                "first_release_date": gameResult.first_release_date,
+                "genres": gameResult.genres,
+                "game_modes": gameResult.game_modes,
+                "platforms": gameResult.platforms,
                 "involved_companies": involved_companies,
-                "summary": game.data[0].summary,
-                "videos": game.data[0].videos,
-                "screenshots": game.data[0].screenshots
+                "summary": gameResult.summary,
+                "videos": gameResult.videos,
+                "screenshots": gameResult.screenshots
             })
         }
     } catch (err) {
@@ -122,7 +157,7 @@ module.exports.searchIGDB = async (req, res) => {
     if(checkTokenValidity(token) === false) {
         getToken()
     }
-    const results = await searchGamesIGDB(req.body['query'])
+    const results = await searchGamesIGDB(req.params.query)
     if(!results) {
         res.status(400).json({
             message: "No games found",
