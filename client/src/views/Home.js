@@ -23,7 +23,7 @@ const Home = () => {
     }
 
   return (
-    <div>
+    <div style={{backgroundColor: '#0F1113'}}>
         <Header />
         <SearchBar onSubmitProp={searchIGDB} />
         <Container>

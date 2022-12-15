@@ -22,7 +22,7 @@ const GameDetails = (props) => {
     }, [selectedGame])
 
   return (
-    <div style={{backgroundColor: '#cccccc'}}>
+    <div style={{backgroundColor: '#1A1C1E'}}>
         {isLoaded && (
             <>
                 <DetailsHeader game={gameDetails}/>

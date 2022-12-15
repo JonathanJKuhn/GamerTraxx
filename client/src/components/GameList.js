@@ -1,4 +1,5 @@
 import React, { useEffect }from 'react'
+import styles from './GameList.module.css'
 import Container from 'react-bootstrap/Container'
 import GameListItem from './GameListItem'
 
@@ -6,14 +7,15 @@ import GameListItem from './GameListItem'
 
 const GameList = (props) => {
     const { searchResults, setSelectedGame } = props
+    const { scrollParent, scrollbar } = styles
     
     //rerender the list when the searchResults state changes
     useEffect(() => {
     }, [searchResults])
 
   return (
-    <Container className='py-2' style={{backgroundColor: '#aaaaaa'}}>
-        <div className='overflow-auto' style={{height: '850px'}}>
+    <Container className={scrollParent} style={{backgroundColor: '#1A1C1E'}}>
+        <div className={scrollbar} style={{height: '850px'}}>
             {
                 searchResults.map((game, i) => {
                     return <GameListItem key={i} game={game} setSelectedGame={setSelectedGame}/>

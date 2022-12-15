@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './GameListItem.module.css'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -8,10 +9,10 @@ const GameListItem = (props) => {
 
   return (
     <div onClick={()=> setSelectedGame(game.id)}>
-    <Container className='my-2' style={{backgroundColor: '#fcf5f5'}} >
+    <Container className={styles.item}>
         <Row>
-        <Col md="2">
-            <img src={game.cover.url} alt='game cover' className='my-1' style={{borderRadius: '50%'}}/>
+        <Col md="2 justify-content-center d-flex align-items-center">
+            <img src={game.cover.url} alt='game cover' className='' style={{borderRadius: '50%', width: '65px', height: '65px'}}/>
         </Col>
         <Col>
             <Row className='mt-3'>

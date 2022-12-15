@@ -14,9 +14,19 @@ const DetailsBody = (props) => {
   return (
     <>
     {isLoaded && (
-        <Container className='py-2' style={{backgroundColor: '#aaaaaa'}}>
+        <Container className='py-2' style={{backgroundColor: '#1A1C1E', color: '#fff'}}>
         <Row>
-            <Col md={{span: "2", offset: "3"}}>
+            <Col md={{span: "3", offset: "2"}}>
+                <p className='mb-0'>Release Date:</p>
+            </Col>
+            <Col>
+                <p className='mb-0'>{
+                    game.first_release_date.date
+                }</p>
+            </Col>
+        </Row>
+        <Row>
+            <Col md={{span: "3", offset: "2"}}>
                 <p className='mb-0'>Genre:</p>
             </Col>
             <Col>
@@ -28,7 +38,7 @@ const DetailsBody = (props) => {
             </Col>
         </Row>
         <Row>
-            <Col md={{span: "2", offset: "3"}}>
+            <Col md={{span: "3", offset: "2"}}>
                 <p className='mb-0'>Platforms:</p>
             </Col>
             <Col>
@@ -40,7 +50,7 @@ const DetailsBody = (props) => {
             </Col>
         </Row>
         <Row>
-            <Col md={{span: "2", offset: "3"}}>
+            <Col md={{span: "3", offset: "2"}}>
                 <p className='mb-0'>Publisher:</p>
             </Col>
             <Col>
@@ -54,7 +64,7 @@ const DetailsBody = (props) => {
             </Col>
         </Row>
         <Row>
-            <Col md={{span: "2", offset: "3"}}>
+            <Col md={{span: "3", offset: "2"}}>
                 <p className='mb-0'>Developers:</p>
             </Col>
             <Col>
@@ -71,8 +81,8 @@ const DetailsBody = (props) => {
             <p>{game.summary}</p>
         </Row>
         <Row className='mb-4'>
-            <Col>
-                <img className="d-block mx-auto" src='https://via.placeholder.com/300x200' alt='game video'/>
+            <Col className='text-center'>
+                <iframe width="560" height="315" src={`https://www.youtube.com/embed/${game.videos[0].video_id}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </Col>
         </Row>
         <Row>

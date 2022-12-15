@@ -23,8 +23,9 @@ const SearchBar = (props) => {
                         controlId="floatingSearch"
                         label="Search"
                         className="mb-3"
+                        style={{color: '#fff'}}
                     >
-                        <Form.Control type="text" placeholder="Search" onChange={(e)=> setSearch(e.target.value) }/>
+                        <Form.Control type="text" placeholder="Search" onChange={(e)=> setSearch(e.target.value) } style={{backgroundColor: '#1A1C1E', color: '#fff', border: 'none'}}/>
                     </FloatingLabel>
                     <button type="submit" style={{visibility: 'hidden'}}></button>
                 </Form>

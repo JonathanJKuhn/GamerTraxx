@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button'
 const DetailsHeader = (props) => {
     const { game } = props
     let isLoaded = false
-    if(game.first_release_date !== undefined) {
+    if(game.cover !== undefined) {
         isLoaded = true
     }
 
@@ -15,21 +15,22 @@ const DetailsHeader = (props) => {
   return (
     <>
     {isLoaded && (
-    <Container style={{backgroundColor: '#fcf5f5'}}>
+    <Container style={{backgroundColor: '#454749', color: '#fff'}}>
         <Row>
-            <Col md="3">
-                <img src={game.cover} alt='game cover' className='mt-2 ms-2' style={{borderRadius: '50%', position: 'relative', top: '65px'}}/>
+            <Col md="8">
             </Col>
-            <Col md="5">
-                <Row className='' style={{marginTop: '65px'}}>
+            <Col md="4" className='d-flex justify-content-end'>
+                <Button variant='primary' className='mt-2'>Add to Collection</Button>
+            </Col>
+        </Row>
+        <Row>
+            <Col md="2" style={{position: 'relative'}}>
+                <img src={game.cover} alt='game cover' className='mt-2 ms-1' style={{borderRadius: '50%', position: 'absolute', bottom: '-45px'}}/>
+            </Col>
+            <Col md="10">
+                <Row style={{marginTop: '25px'}}>
                     <h4>{game.name}</h4>
                 </Row>
-                <Row>
-                    <p className='mb-0'>Release Date: {game.first_release_date.date}</p>
-                </Row>
-            </Col>
-            <Col>
-                <Button variant='primary' className='mt-2'>Add to Collection</Button>
             </Col>
         </Row>
     </Container>
