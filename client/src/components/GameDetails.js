@@ -4,7 +4,7 @@ import DetailsBody from './DetailsBody'
 import axios from 'axios'
 
 const GameDetails = (props) => {
-    const { selectedGame } = props
+    const { selectedGame, view } = props
     const [gameDetails, setGameDetails] = useState({})
     const [isLoaded, setIsLoaded] = useState(false)
 
@@ -25,7 +25,7 @@ const GameDetails = (props) => {
     <div style={{backgroundColor: '#1A1C1E'}}>
         {isLoaded && (
             <>
-                <DetailsHeader game={gameDetails}/>
+                <DetailsHeader view={view} game={gameDetails}/>
                 <DetailsBody game={gameDetails}/>
             </>
         )}

@@ -24,7 +24,7 @@ const Home = () => {
 
   return (
     <div style={{backgroundColor: '#0F1113'}}>
-        <Header />
+        <Header view='home' />
         <SearchBar onSubmitProp={searchIGDB} />
         <Container>
             <Row>
@@ -32,7 +32,7 @@ const Home = () => {
                     <GameList searchResults={searchResults} setSelectedGame={setSelectedGame}/>
                 </Col>
                 <Col>
-                    <GameDetails selectedGame={selectedGame}/>
+                    <GameDetails view='home' selectedGame={selectedGame}/>
                 </Col>
             </Row>
         </Container>

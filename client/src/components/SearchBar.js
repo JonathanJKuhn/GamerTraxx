@@ -17,7 +17,7 @@ const SearchBar = (props) => {
   return (
     <Container className='my-3'>
         <Row className='justify-content-center'>
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={6}>
                 <Form onSubmit={handleSubmit}>
                     <FloatingLabel
                         controlId="floatingSearch"

@@ -1,4 +1,5 @@
 const axios = require('axios')
+const Game = require('../models/game.model')
 
 //include access_token, token_type, and expiration_time?
 let token = {
@@ -98,7 +99,7 @@ const getDetailsIGDB = async (id) => {
             const options = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' };
             if(gameResult.hasOwnProperty('first_release_date')) {
                 gameResult.first_release_date = {
-                    "timestamp": game.data[0].first_release_date,
+                    "timestamp": gameResult.first_release_date,
                     "date": date.toLocaleDateString('en-US', options)
                 }
             } else {
@@ -178,4 +179,38 @@ module.exports.detailsIGDB = async (req, res) => {
         })
     }
     res.json(results)
+}
+
+module.exports.createCollectionGame = (req, res) => {
+    Game.init()
+        .then(async () => {
+            const game = new Game(req.body)
+            await game.save()
+            res.status(201).json(game)
+        })
+        .catch((err) => res.status(400).json(err))
+}
+
+module.exports.getCollectionGames = (req, res) => {
+    Game.find()
+        .then((games) => res.json(games))
+        .catch((err) => res.status(400).json(err))
+}
+
+module.exports.getCollectionGame = (req, res) => {
+    Game.findById(req.params.id)
+        .then((game) => res.json(game))
+        .catch((err) => res.status(400).json(err))
+}
+
+module.exports.updateCollectionGame = (req, res) => {
+    Game.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' })
+        .then((updatedGame) => res.json(updatedGame))
+        .catch((err) => res.status(400).json(err))
+}
+
+module.exports.deleteCollectionGame = (req, res) => {
+    Game.deleteOne({ _id: req.params.id })
+        .then((result) => res.json(result))
+        .catch((err) => res.status(400).json(err))
 }
