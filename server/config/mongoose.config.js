@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
+const connectionString = process.env.DB_URI
 
-mongoose.connect("mongodb://localhost/gametrax_db", {
+mongoose.connect(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
