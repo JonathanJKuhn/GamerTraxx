@@ -88,17 +88,17 @@ const DetailsBody = (props) => {
         <Row className='mb-3 px-3'>
             <p>{game.summary}</p>
         </Row>
-        <Row className='mb-4'>
+        {!!game.videos && !!game.videos[0]
+        ? <Row className='mb-4'>
             <Col className='text-center'>
-                {!!game.videos && !!game.videos[0]
-                    ? <iframe width="560" height="315" src={`https://www.youtube.com/embed/${game.videos[0].video_id}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                    : <img src='https://via.placeholder.com/560/315?text=No+Videos+Available' alt='No Video Available' width='560' height='315'/>
-                }
+                    <iframe width="560" height="315" src={`https://www.youtube.com/embed/${game.videos[0].video_id}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </Col>
         </Row>
-        <Row>
-            {!!game.screenshots && !!game.screenshots[0]
-                ? <Carousel>
+        : null
+        }
+        {!!game.screenshots && !!game.screenshots[0]
+            ? <Row>
+                <Carousel>
                     {
                         game.screenshots.map((screenshot, i) => {
                             return (
@@ -114,9 +114,9 @@ const DetailsBody = (props) => {
                         })
                     }
                 </Carousel>
-                : <img src='https://via.placeholder.com/560/315?text=No+Screenshots+Available' alt='No Screenshots Available' width='560' height='315'/>
-            }
-        </Row>
+            </Row>
+        : null
+        }
     </Container>
     )}
     </>

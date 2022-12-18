@@ -16,7 +16,7 @@ const GameDetails = (props) => {
             } else if(view === 'my-games'){
                 endpoint = 'my-games'
             }
-            axios.get(`http://localhost:8000/api/v1/${endpoint}/${selectedGame}`)
+            axios.get(`/api/v1/${endpoint}/${selectedGame}`)
             .then(res => {
                 setGameDetails(res.data)
             })
