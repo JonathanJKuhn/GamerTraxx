@@ -28,25 +28,25 @@ const DetailsHeader = (props) => {
     }, [game])
 
     const handleCreate = (game) => {
-        axios.post('http://localhost:8000/api/v1/my-games', game)
+        axios.post(`/api/v1/my-games`, game)
         .then((res) => navigate('/my-games'))
         .catch((err) => console.log(err))
     }
 
     const handleStatusChange = (status) => {
-        axios.patch(`http://localhost:8000/api/v1/my-games/${game.id}`, {play_status: status})
+        axios.patch(`/api/v1/my-games/${game.id}`, {play_status: status})
         .then((res) => setGame(res.data))
         .catch((err) => console.log(err))
     }    
 
     const handleLikeChange = (like) => {
-        axios.patch(`http://localhost:8000/api/v1/my-games/${game.id}`, {like: like})
+        axios.patch(`/api/v1/my-games/${game.id}`, {like: like})
         .then((res) => setGame(res.data))
         .catch((err) => console.log(err))
     }
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:8000/api/v1/my-games/${game.id}`)
+        axios.delete(`/api/v1/my-games/${game.id}`)
         .then((res) => getCollection())
         .catch((err) => console.log(err))
     }

@@ -13,7 +13,7 @@ const Home = () => {
     const [selectedGame, setSelectedGame] = useState()
 
     const searchIGDB = (searchParam) => {
-        axios.get(`http://localhost:8000/api/v1/search-igdb/${searchParam}`)
+        axios.get(`/api/v1/search-igdb/${searchParam}`)
         .then(res => {
             setSearchResults(res.data)
         })

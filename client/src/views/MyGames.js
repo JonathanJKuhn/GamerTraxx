@@ -16,7 +16,7 @@ const MyGames = () => {
     }, [])
 
     const getCollection = () => {
-        axios.get('http://localhost:8000/api/v1/my-games')
+        axios.get(`/api/v1/my-games`)
         .then(res => {
                 setSearchResults(res.data)
                 setSelectedGame(undefined)
