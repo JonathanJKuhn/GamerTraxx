@@ -32,7 +32,7 @@ const Home = () => {
                     <GameList searchResults={searchResults} setSelectedGame={setSelectedGame}/>
                 </Col>
                 <Col>
-                    <GameDetails view='home' selectedGame={selectedGame}/>
+                    <GameDetails view='home' selectedGame={selectedGame} setSelectedGame={setSelectedGame}/>
                 </Col>
             </Row>
         </Container>

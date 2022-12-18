@@ -7,8 +7,12 @@ import Row from 'react-bootstrap/Row'
 const GameListItem = (props) => {
     const { game, setSelectedGame } = props
 
+    const handleGameClick = (e) => {
+        setSelectedGame(game.id)
+    }
+
   return (
-    <div onClick={()=> setSelectedGame(game.id)}>
+    <div onClick={(e)=>handleGameClick(e.target.value)}>
     <Container className={styles.item}>
         <Row>
         <Col md="2 justify-content-center d-flex align-items-center">

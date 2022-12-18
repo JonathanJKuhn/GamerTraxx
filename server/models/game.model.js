@@ -4,12 +4,13 @@ const GameSchema = new mongoose.Schema({
         type: Number,
         index: true,
         required: true,
+        unique: true,
     },
     name: {
         type: String,
     },
     cover: {
-        type: String,
+        type: Object,
     },
     first_release_date: {
         type: Object,

@@ -4,13 +4,19 @@ import DetailsBody from './DetailsBody'
 import axios from 'axios'
 
 const GameDetails = (props) => {
-    const { selectedGame, view } = props
+    const { selectedGame, view, setSelectedGame, getCollection } = props
     const [gameDetails, setGameDetails] = useState({})
     const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
         if(selectedGame !== undefined) {
-            axios.get(`http://localhost:8000/api/v1/details-igdb/${selectedGame}`)
+            let endpoint
+            if(view === 'home'){
+                endpoint = 'details-igdb'
+            } else if(view === 'my-games'){
+                endpoint = 'my-games'
+            }
+            axios.get(`http://localhost:8000/api/v1/${endpoint}/${selectedGame}`)
             .then(res => {
                 setGameDetails(res.data)
             })
@@ -18,14 +24,17 @@ const GameDetails = (props) => {
             .catch(err => {
                 console.log(err)
             })
+        } else {
+            setIsLoaded(false)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedGame])
 
   return (
     <div style={{backgroundColor: '#1A1C1E'}}>
         {isLoaded && (
             <>
-                <DetailsHeader view={view} game={gameDetails}/>
+                <DetailsHeader view={view} game={gameDetails} setSelectedGame={setSelectedGame} setGame={setGameDetails} getCollection={getCollection}/>
                 <DetailsBody game={gameDetails}/>
             </>
         )}

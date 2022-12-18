@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { request } = require('express')
 const Game = require('../models/game.model')
 
 //include access_token, token_type, and expiration_time?
@@ -21,7 +22,6 @@ const getToken = (id=process.env.CLIENT_ID,secret=process.env.CLIENT_SECRET) =>{
         process.env.ACCESS_TOKEN = res.data['access_token']
         process.env.EXPIRES_AT = expiration
         process.env.TOKEN_TYPE = res.data['token_type']
-        console.log(token)
     })
     .then(() => checkTokenValidity(token))
     .catch((err) => console.log(err))
@@ -112,8 +112,19 @@ const getDetailsIGDB = async (id) => {
                 gameResult.cover.url = `https:${gameResult.cover.url}`
             } else {
                 gameResult.cover = {
-                    "url": 'https://via.placeholder.com/125?text=No+Cover+Found'
+                    "url": 'https://via.placeholder.com/90?text=No+Cover+Avaliable'
                 }
+            }
+
+            if (gameResult.hasOwnProperty('screenshots')) {
+                gameResult.screenshots.forEach(screenshot => {
+                    let urlArray = screenshot.url.split('/')
+                    urlArray[6] = 't_original'
+                    screenshot.url = urlArray.join('/')
+                    screenshot.url = `https:${screenshot.url}`
+                })
+            } else {
+                gameResult.screenshots = null
             }
 
             let involved_companies = []
@@ -128,15 +139,24 @@ const getDetailsIGDB = async (id) => {
             } else {
                 involved_companies = null
             }
+            
+            let platforms = []
+            if(gameResult.hasOwnProperty('platforms')){
+                gameResult.platforms.forEach(platform => {
+                    platforms.push(platform.name)
+                })
+            } else {
+                platforms = null
+            }
 
             return ({
                 "id": gameResult.id,
                 "name": gameResult.name,
-                "cover": gameResult.cover.url,
+                "cover": {"url": gameResult.cover.url},
                 "first_release_date": gameResult.first_release_date,
                 "genres": gameResult.genres,
                 "game_modes": gameResult.game_modes,
-                "platforms": gameResult.platforms,
+                "platforms": platforms,
                 "involved_companies": involved_companies,
                 "summary": gameResult.summary,
                 "videos": gameResult.videos,
@@ -198,19 +218,19 @@ module.exports.getCollectionGames = (req, res) => {
 }
 
 module.exports.getCollectionGame = (req, res) => {
-    Game.findById(req.params.id)
+    Game.findOne({id: req.params.id})
         .then((game) => res.json(game))
         .catch((err) => res.status(400).json(err))
 }
 
 module.exports.updateCollectionGame = (req, res) => {
-    Game.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' })
+    Game.findOneAndUpdate({id: req.params.id}, req.body, { new: true, runValidators: true, context: 'query' })
         .then((updatedGame) => res.json(updatedGame))
         .catch((err) => res.status(400).json(err))
 }
 
 module.exports.deleteCollectionGame = (req, res) => {
-    Game.deleteOne({ _id: req.params.id })
+    Game.deleteOne({id: req.params.id })
         .then((result) => res.json(result))
         .catch((err) => res.status(400).json(err))
 }
